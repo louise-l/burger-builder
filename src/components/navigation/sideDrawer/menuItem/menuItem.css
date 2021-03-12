@@ -1,0 +1,17 @@
+.MenuItem{
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.MenuItem img{
+  width : 30px;
+  height: 30px;
+  filter:invert(1)
+}
+
+@media (min-width:500px){
+  .MenuItem{
+    display: none;
+  }
+}

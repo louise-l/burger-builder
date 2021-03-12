@@ -1,0 +1,29 @@
+.ingredientButton{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.tinyButton {
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  border: none;
+  margin: 0px 8px;
+  width: 24px;
+  height: 24px;
+  font-weight: bold;
+  background-color: transparent;
+  cursor:pointer;
+  border: 2px solid #2D728F;
+}
+.tinyButton:disabled{
+  opacity:0.3;
+  cursor:not-allowed
+
+}
+
