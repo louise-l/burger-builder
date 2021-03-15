@@ -1,7 +1,6 @@
 // this is the button component for adding an ingredient
 import React from 'react'
 import "./ingredientButton.css"
-import Button from '../../../UI/button/button'
 
 const IngredientButton = (props) => {
   return (

@@ -15,13 +15,13 @@ class Layout extends Component {
 
   render () {
     return (
-      <React.Fragment class = 'Layout'>
+      <div className = 'Layout'>
         <Toolbar toggleMenu = {this.sideDrawerToggleHandler}/>
         <SideDrawer show = {this.state.showSideDrawer} hide = {this.sideDrawerToggleHandler}/>
         <main className = "Content">
           {this.props.children}
         </main>
-      </React.Fragment>
+      </div>
       )
   }
 

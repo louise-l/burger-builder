@@ -9,7 +9,7 @@ const Toolbar = (props) => {
     <div className = "Toolbar">
       <MenuItem toggle={props.toggleMenu}/>
       <Logo/>
-      <nav class = "DesktopOnly">
+      <nav className = "DesktopOnly">
         <NavigationItems/>
       </nav>
     </div>
