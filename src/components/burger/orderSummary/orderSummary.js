@@ -2,9 +2,7 @@ import React, { Component} from 'react'
 import Button from '../../UI/button/button'
 
 class OrderSummary extends Component {
-  componentDidUpdate(){
-    console.log('Order Summary will update')
-  }
+
   render() { 
     const ingredientSummary = Object.keys(this.props.ingredients)
     .map(igKey => {
@@ -12,6 +10,7 @@ class OrderSummary extends Component {
         <span style={{textTransform: 'capitalize'}}>{igKey}</span> : {this.props.ingredients[igKey]}
         </li>)
     })
+
     return (
       <div>
         <h3>Summary</h3>
