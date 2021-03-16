@@ -18,7 +18,7 @@ class OrderSummary extends Component {
           {ingredientSummary}
         </ul>
         <p>Price : {this.props.price.toFixed(2)} €</p>
-        <Button type ="Success">Proceed to checkout</Button>
+        <Button type ="Success" action = {this.props.continue}>Proceed to checkout</Button>
         <Button type = "Danger" hide = {this.props.purchasing} >Back to order</Button>
       </div>
     )

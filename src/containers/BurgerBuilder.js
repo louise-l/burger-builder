@@ -4,8 +4,11 @@ import React, {Component} from 'react'
 import Burger from '../components/burger/burger'
 import BurgerControls from '../components/burger/burgerControls/burgerControls'
 import Modal from '../components/UI/modal/modal'
+import Spinner from "../components/UI/spinner/spinner"
 import "../components/layout.css"
 import OrderSummary from '../components/burger/orderSummary/orderSummary'
+import axios from '../axios-orders'
+
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -26,12 +29,6 @@ class BurgerBuilder extends Component {
     purchasable: false,
     purchasing: false
   }
-
-  // updatePuchasable = () => {
-  //   let canPurchase = this.state.purchasable
-  //   let ingredients = {...this.state.ingredients}
-  //   console.log(ingredients)
-  // }
 
   addIngredientHandler = (type) => {
     // GERER LES INGREDIENTS
@@ -80,7 +77,21 @@ class BurgerBuilder extends Component {
     const purchasing = this.state.purchasing
     this.setState({purchasing: !purchasing})
   }
-
+  
+  // ENVOYER LA COMMANDE A LA DB
+  continuePurchaseAlert = () => {
+    const data = {
+      ingredients: this.state.ingredients,
+      totalPrice: this.state.totalPrice,
+      customer: {
+        name:'Louise',
+        deliveryMode:'fast'
+      }
+    }
+    axios.post('/orders.json', data)
+      .then(response => console.log(response))
+      .catch(error => console.log(error))
+  }
 
   render(){
     
@@ -104,7 +115,10 @@ class BurgerBuilder extends Component {
           <OrderSummary 
             ingredients = {this.state.ingredients} 
             price = {this.state.totalPrice} 
-            purchasing = {this.purchasingHandler}/>
+            purchasing = {this.purchasingHandler}
+            continue = {this.continuePurchaseAlert}/>
+                    <Spinner/>
+
         </Modal>
       </div>
 
