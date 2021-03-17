@@ -27,7 +27,12 @@ class BurgerBuilder extends Component {
     },
     totalPrice: 4,
     purchasable: false,
-    purchasing: false
+    purchasing: false, 
+    loading: false
+  }
+  componentDidMount(){
+    axios.get('/ingredients.json')
+      .then(response => (console.log(response)))
   }
 
   addIngredientHandler = (type) => {
@@ -77,9 +82,10 @@ class BurgerBuilder extends Component {
     const purchasing = this.state.purchasing
     this.setState({purchasing: !purchasing})
   }
-  
+
   // ENVOYER LA COMMANDE A LA DB
   continuePurchaseAlert = () => {
+    this.setState({loading: true})
     const data = {
       ingredients: this.state.ingredients,
       totalPrice: this.state.totalPrice,
@@ -89,8 +95,8 @@ class BurgerBuilder extends Component {
       }
     }
     axios.post('/orders.json', data)
-      .then(response => console.log(response))
-      .catch(error => console.log(error))
+      .then(() => this.setState({loading:false, purchasing: false}))
+      .catch(() => this.setState({loading:false, purchasing: false}))
   }
 
   render(){
@@ -98,6 +104,17 @@ class BurgerBuilder extends Component {
     const noIngredients = {...this.state.ingredients}
     for (let key in noIngredients){
       noIngredients[key] = noIngredients[key] <= 0
+    }
+
+    let modalContent = 
+      <OrderSummary 
+      ingredients = {this.state.ingredients} 
+      price = {this.state.totalPrice} 
+      purchasing = {this.purchasingHandler}
+      continue = {this.continuePurchaseAlert}/>
+
+    if (this.state.loading){
+      modalContent = <Spinner/>
     }
 
     return (
@@ -112,13 +129,7 @@ class BurgerBuilder extends Component {
           addHandler = {this.addIngredientHandler}
           purchasing = {this.purchasingHandler}/>
         <Modal show = {this.state.purchasing} hide ={this.purchasingHandler}> 
-          <OrderSummary 
-            ingredients = {this.state.ingredients} 
-            price = {this.state.totalPrice} 
-            purchasing = {this.purchasingHandler}
-            continue = {this.continuePurchaseAlert}/>
-                    <Spinner/>
-
+          {modalContent}
         </Modal>
       </div>
 
