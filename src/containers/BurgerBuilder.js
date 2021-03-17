@@ -19,20 +19,20 @@ const INGREDIENT_PRICES = {
 
 class BurgerBuilder extends Component {
   state = {
-    ingredients: {
-      salad: 0,
-      cheese: 0,
-      meat: 0, 
-      bacon: 0,
-    },
+    ingredients: 0,
     totalPrice: 4,
     purchasable: false,
     purchasing: false, 
     loading: false
   }
+
+  // RETRIEVE INGREDIENT LIST FROM THE DB
   componentDidMount(){
+    this.setState({loading: true})
     axios.get('/ingredients.json')
-      .then(response => (console.log(response)))
+      .then(response => {
+        this.setState({ingredients: response.data, loading:false})
+      })
   }
 
   addIngredientHandler = (type) => {
@@ -121,6 +121,7 @@ class BurgerBuilder extends Component {
       <div>
         <Burger ingredients = {this.state.ingredients}/>
         <BurgerControls 
+          loading = {this.state.loading}
           canPurchase = {this.state.purchasable}
           disable = {noIngredients}
           ingredients = {this.state.ingredients}
