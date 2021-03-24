@@ -1,6 +1,7 @@
 import React, { Component} from 'react'
 import Button from '../../UI/button/button'
 
+
 class OrderSummary extends Component {
 
   render() { 
@@ -19,7 +20,7 @@ class OrderSummary extends Component {
         </ul>
         <p>Price : {this.props.price.toFixed(2)} €</p>
         <Button type ="Success" action = {this.props.continue}>Proceed to checkout</Button>
-        <Button type = "Danger" hide = {this.props.purchasing} >Back to order</Button>
+        <Button type = "Danger" action = {this.props.purchasing} >Back to order</Button>
       </div>
     )
   }

@@ -1,0 +1,10 @@
+.CheckoutSummary{
+  width:500px;
+  margin: 0 auto;
+}
+
+@media (max-width: 500px) {
+  .CheckoutSummary{
+    width:100%;
+  }
+}

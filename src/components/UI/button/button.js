@@ -3,8 +3,8 @@ import './button.css'
 
 const Button = (props) => {
   return (
-  <div onClick = {props.hide}>
-    <p className = {[props.type, 'Button'].join(' ')} onClick ={props.action} >{props.children}</p>
+  <div onClick = {props.action}>
+    <p className = {[props.type, 'Button'].join(' ')} >{props.children}</p>
   </div>)
 }
 
