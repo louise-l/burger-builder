@@ -11,31 +11,45 @@ import CheckoutSummary from '../../components/UI/checkoutSummary/checkoutSummary
 
 class Checkout extends Component{
   state = {
-    ingredients: {
-      salad: 1,
-      meat: 1,
-      bacon: 1,
-      cheese: 1,
-    }
+    ingredients: 0, 
+    totalPrice: 0,
+    loading: false
   }
+
+
   goBackHandler = () => {
     this.props.history.goBack()
   }
 
   goContinueHandler = () => {
-    console.log('continue handler')
-    this.props.history.replace(this.props.match.path +'/fill-data')
+    this.props.history.replace('/checkout/fill-data')
   }
 
+  componentDidMount = () => {
+    if (this.props.history.location.state){
+      let ingredients = this.props.history.location.state.ingredients
+      let totalPrice = this.props.history.location.state.totalPrice
+      this.setState({ingredients: ingredients, totalPrice: totalPrice})
+    } else { this.setState({ingredients: {salad:0}}) }
+  }
+
+
+
   render (){
-    console.log(this.props.history.location.state)
     return (
       <div>
         <CheckoutSummary 
-          ingredients = {this.props.history.location.state} 
+          ingredients = {this.state.ingredients} 
           goBack = {this.goBackHandler} 
           goContinue = {this.goContinueHandler}/>
-        <Route to={this.props.match.path + '/fill-data'} component = {ContactData}/>
+        <Route 
+          path={this.props.match.path + '/fill-data'} 
+          render = {(props) => <ContactData 
+                      ingredients = {this.state.ingredients}
+                      totalPrice = {this.state.totalPrice}
+                      {...props}
+                      />}
+        />
       </div>
     )
   }

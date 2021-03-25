@@ -9,7 +9,7 @@ const CheckoutSummary = (props) => {
 
   return (
     <div className = 'CheckoutSummary'>
-      <h1>We hope you enjoy your meal</h1>
+      <h1>Your order :</h1>
       <Burger ingredients = {props.ingredients}/>
       <Button type = 'Danger' action = {props.goBack}>Go back</Button>
       <Button type = 'Success' action = {props.goContinue}>Go pay</Button>
