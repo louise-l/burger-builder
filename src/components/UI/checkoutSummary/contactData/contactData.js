@@ -16,6 +16,10 @@ class ContactData extends Component{
           placeholder: 'Name',
         },
         value: '',
+        validations: {
+          required: true,
+        },
+        valid: false,
       },
       email: {
         elementType: 'input',
@@ -24,6 +28,10 @@ class ContactData extends Component{
           placeholder: 'Email',
         },
         value: '',
+        validations: {
+          required: true,
+        },
+        valid: false,
       },
       city: {
         elementType: 'input',
@@ -32,6 +40,10 @@ class ContactData extends Component{
           placeholder: 'Your City',
         },
         value: '',
+        validations: {
+          required: true,
+        },
+        valid: false,
       },
       zipCode: {
         elementType: 'input',
@@ -40,14 +52,22 @@ class ContactData extends Component{
           placeholder: 'zipCode',
         },
         value: '',
+        validations: {
+          required: true,
+        },
+        valid: false,
       },
       suggestions: {
-          elementType: 'textarea',
-          elementConfig: {
-            name: 'suggestions',
-            placeholder: 'Your suggestions',
-          },
-          value: '',
+        elementType: 'textarea',
+        elementConfig: {
+          name: 'suggestions',
+          placeholder: 'Your suggestions',
+        },
+        value: '',
+        validations: {
+          required: true,
+        },
+        valid: false,
       },
       deliveryMode: {
         elementType: 'select',
@@ -65,25 +85,32 @@ class ContactData extends Component{
   orderHandler = (event) => {
     event.preventDefault()
     this.setState({loading: true})
-    const data = {
-      ingredients: this.props.ingredients,
-      totalPrice: this.props.totalPrice,
-      customer: {
-        name: this.state.name,
-        email: this.state.email,
-        city: this.state.city,
-        zipCode: this.state.zipCode,
-        deliveryMode:'fast'
-      }
+    const data = {}
+    for (let formElement in this.state.orderForm) {
+      data[formElement] = this.state.orderForm[formElement].value
     }
-    axios.post('/orders.json', data)
+    const orderToSend = {
+      order: data, 
+      ingredients: this.props.ingredients,
+      totalPrice: this.props.totalPrice
+    }
+    
+    axios.post('/orders.json', orderToSend)
     .then(() => {
       this.setState( { loading:false } )
-      console.log('the data sent to the DB',data)
         this.props.history.push('/')
         alert('Thank you for your purchase ! Your delivery will be here soon')
       })
-      .catch(() => this.setState({loading:false}))
+    .catch(() => this.setState({loading:false}))
+  }
+
+  isValid = (value, rules) => {
+    let isValid = false
+    console.log('value is valid', value, 'rules', rules)
+    if (rules.required){
+      isValid = value.trim().length !== 0
+    }
+    return isValid
   }
 
   handleChange = (event, id) => {
@@ -91,13 +118,15 @@ class ContactData extends Component{
     const currentState = {...this.state.orderForm}
     // fetch the object of the changed element
     const updatedFormElement = {...currentState[id]}
-    //update the value (initially is empty string)
+    //check the validity 
+    const elementIsValid = this.isValid(event.target.value, updatedFormElement.validations)
+    //update the value (initially is empty string) & the validity
     updatedFormElement.value = event.target.value
+    updatedFormElement.valid = elementIsValid
     // update the coresponding object
     currentState[id] = updatedFormElement
     //upload the whole new state
-    console.log(this.state.orderForm[id])
-    this.setState({orderForm: currentState})
+    if (elementIsValid) this.setState({orderForm: currentState})
   }
 
   render (){
@@ -110,7 +139,7 @@ class ContactData extends Component{
     }
 
     let form = (
-      <form>
+      <form >
         {formElements.map(el => {
           return (<FormInput 
             inputType = {el.config.elementType} 
@@ -118,7 +147,7 @@ class ContactData extends Component{
             key = {el.id}
             changed = {(event) => this.handleChange (event, el.id)} />)
         })}
-        <Button type= 'Success' action = {this.orderHandler}> Order now </Button>
+        <Button type= 'Success' action= {this.orderHandler} > Order now </Button>
       </form>
     )
 
