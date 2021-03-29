@@ -18,7 +18,7 @@ const Order = (props) => {
     } else {
 
       return (
-        <span key = {ingr.name} className = 'IngredientOutput'>
+        <span key = {ingr.key} className = 'IngredientOutput'>
           {ingr.ingredientName} ({ingr.ingredientAmount})
         </span>
       )

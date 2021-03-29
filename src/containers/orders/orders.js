@@ -30,7 +30,6 @@ class Orders extends Component {
   
   
   render () {
-    console.log(this.state)
     let ordersToDisplay = (
       this.state.orders.map( order => (
         <Order key = {order.key} 

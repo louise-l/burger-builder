@@ -1,0 +1,15 @@
+.FormInput {
+  display: block;
+  margin: 10px auto;
+  width: 50%;
+  resize: none;
+  font-family: inherit;
+  outline: none;
+  border: 1px solid lightgray;
+  
+}
+
+.FormInput:focus{
+  background-color: lightgray;
+  border: 1px solid lightgray;
+}

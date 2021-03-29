@@ -87,7 +87,6 @@ class BurgerBuilder extends Component {
   // ENVOYER LA COMMANDE A LA DB
   continuePurchaseAlert = () => {
 
-    console.log('state sending to checkout', this.state)
     this.props.history.push('/checkout', this.state)
 
   }
