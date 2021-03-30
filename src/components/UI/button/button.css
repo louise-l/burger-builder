@@ -6,6 +6,11 @@
   border-radius: 8px;
   transform-origin: 100% 100%;
   cursor: pointer;
+  border: none;
+}
+.Button:disabled{
+  cursor:not-allowed;
+  opacity: 0.5;
 }
 
 .Success{
@@ -15,8 +20,5 @@
 .Danger{
   background-color: #651611; 
   font-weight: lighter;
-  font-size: smaller;
   transform-origin: 100% 100%;
-
-
 }

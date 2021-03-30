@@ -8,6 +8,7 @@ import FormInput from "../../form/formInput"
 
 class ContactData extends Component{
   state = {
+    formIsValid: false,
     orderForm: {
       name: {
         elementType: 'input',
@@ -20,6 +21,7 @@ class ContactData extends Component{
           required: true,
         },
         valid: false,
+        touched: false,
       },
       email: {
         elementType: 'input',
@@ -32,6 +34,7 @@ class ContactData extends Component{
           required: true,
         },
         valid: false,
+        touched: false,
       },
       city: {
         elementType: 'input',
@@ -44,6 +47,7 @@ class ContactData extends Component{
           required: true,
         },
         valid: false,
+        touched: false,
       },
       zipCode: {
         elementType: 'input',
@@ -56,6 +60,7 @@ class ContactData extends Component{
           required: true,
         },
         valid: false,
+        touched: false,
       },
       suggestions: {
         elementType: 'textarea',
@@ -64,10 +69,8 @@ class ContactData extends Component{
           placeholder: 'Your suggestions',
         },
         value: '',
-        validations: {
-          required: true,
-        },
-        valid: false,
+        valid: true,
+        touched: false,
       },
       deliveryMode: {
         elementType: 'select',
@@ -77,7 +80,8 @@ class ContactData extends Component{
             {value: 'cheapest', displayValue: 'Cheapest'}
           ]
         },
-        value: '',
+        value: 'fastest',
+        valid: true,
       }
     }
   }
@@ -106,11 +110,32 @@ class ContactData extends Component{
 
   isValid = (value, rules) => {
     let isValid = false
-    console.log('value is valid', value, 'rules', rules)
+
+    if (!rules){
+      return true
+    }
+
     if (rules.required){
-      isValid = value.trim().length !== 0
+      isValid = value.trim() !== ''
     }
     return isValid
+  }
+
+  // check if every input is valid, and we can send the form
+  isValidForm = (updatedElements) => {
+    let isValid = [];
+    for (let key in updatedElements){
+      isValid.push(updatedElements[key].valid)
+    }
+    let everyTrueElement = []
+    isValid.map(el => {
+      if (el === true || undefined) {
+        everyTrueElement.push(el)
+      }
+    })
+    if (everyTrueElement.length === isValid.length){
+      return true
+    } else return false
   }
 
   handleChange = (event, id) => {
@@ -120,13 +145,16 @@ class ContactData extends Component{
     const updatedFormElement = {...currentState[id]}
     //check the validity 
     const elementIsValid = this.isValid(event.target.value, updatedFormElement.validations)
-    //update the value (initially is empty string) & the validity
+    //update the value (initially is empty string) & the validity & if touched
     updatedFormElement.value = event.target.value
     updatedFormElement.valid = elementIsValid
+    updatedFormElement.touched = true
     // update the coresponding object
     currentState[id] = updatedFormElement
+    // check if the whole form is valid
+    const formIsValid = this.isValidForm(currentState)
     //upload the whole new state
-    if (elementIsValid) this.setState({orderForm: currentState})
+    this.setState({orderForm: currentState, formIsValid: formIsValid })
   }
 
   render (){
@@ -145,9 +173,11 @@ class ContactData extends Component{
             inputType = {el.config.elementType} 
             inputConfig = {el.config.elementConfig}  
             key = {el.id}
+            valid = {el.config.valid}
+            touched = {el.config.touched}
             changed = {(event) => this.handleChange (event, el.id)} />)
         })}
-        <Button type= 'Success' action= {this.orderHandler} > Order now </Button>
+        <Button type= 'Success' action= {this.orderHandler} disabled = {!this.state.formIsValid}> Order now </Button>
       </form>
     )
 
